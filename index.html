@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="style.css">
+	<script>
+	window.onload = function () {
+		var ul = document.querySelector("#menu ul");
+		var active = document.querySelector("#menu ul li.active");
+
+		ul.onclick = function(event){
+			var target = event.target;
+			if(target.tagName !== "LI") return;
+			 active = document.querySelector("#menu ul li.active");
+			
+			active.classList.remove("active");
+			target.classList.add("active");
+			LoadData(target);
+					
+	}
+	LoadData(active);
+
+// 	postsend.onclick = function(){
+// 	var xhr = new XMLHttpRequest();
+// 	var body = "myinput="+ encodeURIComponent(p1.value);
+// 	xhr.open("POST","/postsend", true);
+	
+// 	xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+// 	xhr.send(body);
+
+// 	xhr.onreadystatechange = function(){
+// 		if(xhr.readyState == 4)
+// 			alert(xhr.responseText);
+// 	}
+	
+
+// }
+
+
+
+}
+
+	function LoadData(li){
+	var xhr = new XMLHttpRequest();
+	var path;
+	if(li.innerHTML == "Перегляд")
+		path = "/list";
+	else 
+		path = "/form";
+	
+		xhr.open("GET",path,true) ;
+		xhr.send();
+		xhr.onreadystatechange = function(){
+			if (xhr.readyState == 4) 
+				if(li.innerHTML == "Перегляд"){
+					ParseJson(xhr.responseText, content);
+					return;
+				}
+				content.innerHTML = xhr.responseText;
+			}			
+	}
+
+ 	function ParseJson(file, cont){
+ 		// content.innerHTML = "";
+ 		// var ol = document.createElement("ol");
+ 		// cont.appendChild(ol);
+
+ 		// file = JSON.parse(file);
+ 		// for (var i = 0; i < file.length; i++) {
+ 		// 	var li = document.createElement("li");
+ 		// 	ol.appendChild(li);
+ 		// 	li.innerHTML =  file[i].firstname + " " + file[i].lastname + " " + file[i].salary;
+ 		// }
+
+ 		content.innerHTML = "";
+ 		file = JSON.parse(file);
+
+ 		var mas =[];
+ 		for(var key in file[0])
+ 			mas.push(key);
+ 			mas.push(" ");
+
+ 		var table = document.createElement("table");
+ 		cont.appendChild(table);
+
+ 		var tr = document.createElement("tr");
+ 		table.appendChild(tr);
+
+ 		for (var i = 0; i < mas.length; i++) {
+ 			var td = document.createElement("td");
+ 			td.innerHTML = mas[i];
+ 			td.classList.add("header");
+ 			tr.appendChild(td);
+ 		}
+
+ 		for (var i = 0; i < file.length; i++) {
+ 			tr = document.createElement("tr");
+ 			table.appendChild(tr);
+ 			for (var j = 0; j < mas.length-1; j++){
+ 				td = document.createElement("td");
+ 				td.innerHTML = file[i][mas[j]];
+ 				tr.appendChild(td);
+ 			}
+ 			var td = document.createElement("td");
+ 			 var btn = document.createElement("button");
+ 			 btn.innerHTML = "X delete";
+ 			 btn.classList.add("btn");
+ 			 td.appendChild(btn);
+ 			 btn.onclick = DelClick;
+ 			 tr.appendChild(td);
+ 		}
+
+
+
+ }
+function GetSend(){
+	var inputs = document.querySelectorAll("form input[type='text']");
+	for (var i = 0; i < inputs.length; i++) {
+		if(inputs[i].value == "" || inputs[i].value == " "){
+			alert("Введіть дані у всі поля");
+			return;
+		}
+		}
+		var xhr = new XMLHttpRequest();
+		var params = "firstname="+ encodeURIComponent(Firstname.value)+ "&lastname="+ encodeURIComponent(Lastname.value)+ "&salary="+ encodeURIComponent(Salary.value);
+		xhr.open("GET","/formget?"+ params, true);
+
+		xhr.send();
+		xhr.onreadystatechange = function(){
+			if(xhr.readyState == 4){
+				for (var i = 0; i < inputs.length; i++) 
+					inputs[i].value = "";
+					alert(xhr.responseText);
+
+				
+			}
+		}
+	
+}
+
+function DelClick(){
+	var parent = this.parentNode.parentNode;
+	var id = parent.rowIndex -1;
+	console.log(id);
+	id = "id="+id;
+
+
+	var xhr = new XMLHttpRequest();
+		xhr.open("POST","/formsendpost" , true);
+		
+		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		xhr.send(id);
+		xhr.onreadystatechange = function(){
+			if(xhr.readyState == 4){
+				ParseJson(xhr.responseText,content);		
+			}
+		}
+
+}
+
+
+
+</script>
+</head>
+<body>
+
+<div id="menu">
+	<ul>
+		<li class="active">Перегляд</li>
+		<li>Ввід</li>
+	</ul>
+	
+</div>
+<div id="content">
+
+	
+</div>
+
+<!-- <form method="GET" action="/myget" id="newform"> -->
+<!-- <form method="POST" action="/mypost" id="newform">
+	<input type="text" id="p1" name="myinput">
+	<input type="text" id="p2" name="myinput2">
+	<input type="button" id="postsend" value="postsend">
+	<input type="submit" value="Get">
+</form> -->
+
+	
+</body>
+</html>

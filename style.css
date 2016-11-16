@@ -1,0 +1,72 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+#menu, #content{
+	overflow: hidden;
+	width: 800px;
+	background-color: grey;
+	margin: 10px auto;
+}
+#menu ul{
+	list-style: none;
+}
+#menu ul li{
+	width: 100px;
+	background-color: yellow;
+	padding: 10px;
+	margin: 10px 0 10px 10px;
+	float: left;
+	text-align: center;
+	cursor: pointer;
+	color: blue;
+	font: bold 14px verdana;
+
+}
+#menu ul li.active{
+	background-color: black;
+	color: white;
+	border: 1px solid yellow;
+}
+#content{
+	background-color: lightgray;
+	color: blue;
+	font: bold 14px verdana;
+	
+}
+#content ol {
+	padding-left: 30px;
+	border: 1px solid lightgreen;
+}
+#content form input{
+	width: 150px;
+	height: 20px;
+	margin-bottom: 10px;
+}
+#content form label{
+	display: block;
+	
+}
+
+#content  #sendform {
+	width: 100px;
+	height: 25px;
+	color: #F0B136;
+	background-color: grey;
+	font: bold 14px verdana
+
+}
+table td{
+	border: 1px black dotted;
+	padding: 5px;
+	font: bold 13px verdana;
+}
+.header{
+	background-color: orange;
+	color: black;
+}
+.btn{
+	color: red;
+	padding: 1px;
+
+}
